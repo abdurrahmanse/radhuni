@@ -571,10 +571,14 @@
         // Identify animation style
         const animationClass = container.className.match(/animation-(style\d+)/);
         if (!animationClass || animationClass[1] === 'style4') return; // Skip style4
-  
-        // Apply SplitText to split content into lines, words, and chars
+        
+        // Detect Bengali script and avoid per-character splitting to preserve clusters
+        const isBangla = /[\u0980-\u09FF]/.test(quote.textContent);
+        const splitType = isBangla ? 'lines,words' : 'lines,words,chars';
+        
+        // Apply SplitText with grapheme-safe settings for Bengali
         quote.split = new SplitText(quote, {
-          type: 'lines,words,chars',
+          type: splitType,
           linesClass: 'split-line',
         });
   
@@ -582,7 +586,8 @@
         gsap.set(quote, { perspective: 1000 });
   
         // Define initial states based on animation style
-        const chars = quote.split.chars;
+        // Use words for Bengali or chars for non-Bengali to avoid broken glyph shaping
+        const targets = isBangla ? (quote.split.words || []) : (quote.split.chars || []);
         const style = animationClass[1];
   
         const initialStates = {
@@ -593,11 +598,11 @@
           style5: { opacity: 0, scale: 0.5 },
           style6: { opacity: 0, y: '-100%', rotate: '45deg' },
         };
-  
-        gsap.set(chars, initialStates[style]);
+        
+        gsap.set(targets, initialStates[style]);
   
         // Animate the characters on scroll
-        quote.animation = gsap.to(chars, {
+        quote.animation = gsap.to(targets, {
           x: '0',
           y: '0',
           rotateX: '0',
@@ -607,7 +612,8 @@
           scale: 1,
           duration: 1,
           ease: 'back.out(1.7)',
-          stagger: 0.02,
+          // Slightly larger stagger for words to keep pacing natural
+          stagger: isBangla ? 0.04 : 0.02,
           scrollTrigger: {
             trigger: quote,
             start: 'top 90%',
