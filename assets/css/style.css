@@ -79,9 +79,12 @@ Version: 1.0.0
   --success-color: #28a745;
   --error-color: #dc3545;
   --border-color: #cdd5d6;
-  --title-font: 'Noto Sans Bengali', 'Hind Siliguri', 'Kohinoor Bangla', 'Bangla Sangam MN', 'Nirmala UI', 'Vrinda', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --title-font2: 'Noto Sans Bengali', 'Hind Siliguri', 'Kohinoor Bangla', 'Bangla Sangam MN', 'Nirmala UI', 'Vrinda', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --body-font: 'Noto Sans Bengali', 'Hind Siliguri', 'Kohinoor Bangla', 'Bangla Sangam MN', 'Nirmala UI', 'Vrinda', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --title-font: 'Hind Siliguri', 'Noto Sans Bengali', 'Kohinoor Bangla', 'Bangla Sangam MN', 'Nirmala UI', 'Vrinda',
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --title-font2: 'Hind Siliguri', 'Noto Sans Bengali', 'Kohinoor Bangla', 'Bangla Sangam MN', 'Nirmala UI', 'Vrinda',
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --body-font: 'Hind Siliguri', 'Noto Sans Bengali', 'Kohinoor Bangla', 'Bangla Sangam MN', 'Nirmala UI', 'Vrinda',
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --icon-font: 'Font Awesome 6 Pro';
   --main-container: 1300px;
   --main-container2: 1530px;
@@ -104,7 +107,7 @@ body {
 
 body {
   font-family: var(--body-font);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   color: var(--body-color);
   background-color: var(--white-color);
@@ -1579,7 +1582,7 @@ textarea.is-invalid {
 }
 
 /* Force title font on all title-like elements */
-[class*="title"] {
+[class*='title'] {
   font-family: var(--title-font);
 }
 
@@ -5556,8 +5559,8 @@ blockquote.vs-quote .quote-author {
   }
 }
 /* Bengali shaping safety: prevent dotted circles by avoiding letter/word-breaking */
-html[lang="bn"] *,
-html[lang="bn"] body {
+html[lang='bn'] *,
+html[lang='bn'] body {
   letter-spacing: 0 !important;
   word-break: normal !important;
   overflow-wrap: anywhere;
