@@ -1,5 +1,5 @@
 (function ($) {
-  ("use strict");
+  "use strict";
 
 
   /*=================================
@@ -78,7 +78,8 @@
 
   /*---------- 03. Sticky fix ----------*/
   var lastScrollTop = "";
-  var scrollToTopBtn = ".scrollToTop";
+  // Match the actual back-to-top implementation (button#backToTop)
+  var scrollToTopBtn = "#backToTop";
 
   function stickyMenu($targetMenu, $toggleClass, $parentClass) {
     var st = $(window).scrollTop();
@@ -108,16 +109,10 @@
   });
 
   /*---------- 04. Scroll To Top ----------*/
-  $(scrollToTopBtn).each(function () {
-    $(this).on("click", function (e) {
-      e.preventDefault();
-      $("html, body").animate({
-          scrollTop: 0,
-        },
-        lastScrollTop / 3
-      );
-      return false;
-    });
+  $(document).on("click", scrollToTopBtn, function (e) {
+    e.preventDefault();
+    $("html, body").animate({ scrollTop: 0 }, Math.max(300, lastScrollTop / 3));
+    return false;
   });
 
   /*---------- 05. Set Background Image ----------*/
@@ -272,8 +267,8 @@
   var form = ".ajax-contact";
   var invalidCls = "is-invalid";
   var $email = '[name="email"]';
-  var $validation =
-    '[name="name"],[name="email"],[name="subject"],[name="message"]'; // Must be use (,) without any space
+  // Support both forms: index (name+subject) and contact (fname/lname without subject)
+  var $validation = '[name="name"],[name="fname"],[name="lname"],[name="email"],[name="message"]';
   var formMessages = $(".form-messages");
 
   function sendContact() {
@@ -334,8 +329,8 @@
     if (
       !$($email).val() ||
       !$($email)
-      .val()
-      .match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/)
+        .val()
+        .match(/^([\w-.]+@([\w-]+\.)+[\w-]{2,})$/)
     ) {
       $($email).addClass(invalidCls);
       valid = false;
@@ -346,8 +341,8 @@
     return valid;
   }
 
-  $(form).on("submit", function (element) {
-    element.preventDefault();
+  $(document).on("submit", form, function (e) {
+    e.preventDefault();
     sendContact();
   });
 
@@ -394,6 +389,22 @@
     ".sideMenuCls",
     "show"
   );
+
+  // Mobile menu toggle (open/close) for .vs-menu-wrapper used in template
+  (function mobileMenuToggle() {
+    var $menuWrapper = $(".vs-menu-wrapper");
+    var bodyToggleCls = "vs-body-visible";
+    $(document).on("click", ".vs-menu-toggle", function (e) {
+      e.preventDefault();
+      $menuWrapper.toggleClass(bodyToggleCls);
+    });
+    // Close when clicking outside the panel area
+    $(document).on("click", ".vs-menu-wrapper", function (e) {
+      if ($(e.target).closest(".vs-menu-area").length === 0) {
+        $menuWrapper.removeClass(bodyToggleCls);
+      }
+    });
+  })();
 
  /*----------- 10. Counter section ----------*/
  var a = 0;
@@ -679,8 +690,10 @@
   const CIRCUMFERENCE = 2 * Math.PI * CIRCLE_RADIUS;
 
   // Set initial styles for the circle
-  progressCircle.style.strokeDasharray = CIRCUMFERENCE;
-  progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
+  if (progressCircle) {
+    progressCircle.style.strokeDasharray = CIRCUMFERENCE;
+    progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
+  }
 
   // Update progress based on scroll position
   const updateProgress = () => {
@@ -693,8 +706,8 @@
       const offset = CIRCUMFERENCE * (1 - scrollPercentage / 100);
 
       // Update the circle and percentage display
-      progressCircle.style.strokeDashoffset = offset.toFixed(2);
-      progressPercentage.textContent = `${Math.round(scrollPercentage)}%`;
+  if (progressCircle) progressCircle.style.strokeDashoffset = offset.toFixed(2);
+  if (progressPercentage) progressPercentage.textContent = `${Math.round(scrollPercentage)}%`;
     }
   };
 
@@ -726,10 +739,34 @@
 
   // Attach event listeners
   window.addEventListener('scroll', throttle(updateProgress, 50));
-  backToTopBtn.addEventListener('click', scrollToTop);
+  if (backToTopBtn) backToTopBtn.addEventListener('click', scrollToTop);
 
   // Initial update to set the correct progress on page load
   updateProgress();
+
+  // Respect reduced motion preferences for heavy animations
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reduceMotion.matches) {
+    // Kill WOW animations
+    if (typeof WOW !== 'undefined') {
+      try { wow && wow.disable && wow.disable(); } catch (e) {}
+    }
+    // Disable GSAP-based continuous animations
+    try { gsap.globalTimeline.timeScale(0); } catch (e) {}
+    // Disable slick autoplay
+    $('.vs-carousel').each(function(){
+      try { $(this).slick('slickSetOption','autoplay',false,true); } catch (e) {}
+    });
+  }
+
+  // Lazy-load large decorative images by adding loading="lazy" where possible
+  $("img").each(function(){
+    var $img = $(this);
+    // Skip if explicitly marked or likely critical (logos)
+    if (!$img.attr('loading') && !$img.closest('header').length && !$img.hasClass('main-logo')) {
+      $img.attr('loading','lazy');
+    }
+  });
 
 
 })(jQuery);

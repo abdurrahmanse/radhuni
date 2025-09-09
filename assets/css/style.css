@@ -194,6 +194,12 @@ a:visited {
   outline: 0;
 }
 
+/* Visible focus for keyboard users */
+:focus-visible {
+  outline: 2px dashed var(--theme-color);
+  outline-offset: 2px;
+}
+
 button {
   transition: all ease 0.4s;
 }
@@ -2127,6 +2133,16 @@ a.text-theme:hover,
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 @keyframes jumpping {
