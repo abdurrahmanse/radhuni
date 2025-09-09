@@ -1,7 +1,7 @@
 /*
 Template Name: Cook Chef Portfolio
 Template URL: https://example.com/
-Description: খাদ্যসেবা ও ইভেন্ট শেফ পোর্টফোলিও টেমপ্লেট
+Description: রান্না ও ইভেন্ট শেফ পোর্টফোলিও টেমপ্লেট
 Author: Chef Md. Shafiqul Islam
 Author URI: https://example.com/
 Version: 1.0.0
@@ -58,7 +58,6 @@ Version: 1.0.0
     CSS Index End
 ==================================*/
 
-
 /*=================================
    01. Theme Base
 ==================================*/
@@ -80,7 +79,6 @@ Version: 1.0.0
 /*------------------- 1.7. Wordpress Default -------------------*/
 // @import 'base/wpdefault';
 
-
 /*=================================
     02. Reset
 ==================================*/
@@ -98,7 +96,6 @@ Version: 1.0.0
 
 /*------------------- 2.5. Mobile Menu -------------------*/
 @import 'reset/vsmenu';
-
 
 /*=================================
     03. Utilities
@@ -132,7 +129,6 @@ Version: 1.0.0
 /*------------------- 3.10. Animation -------------------*/
 @import 'utilities/backtotop';
 
-
 /*=================================
     04. Template Style
 ==================================*/
@@ -140,7 +136,6 @@ Version: 1.0.0
 @import 'template/widgets/widget-default-list';
 @import 'template/widgets/widget-sidebar';
 @import 'template/widgets/widget-footer';
-
 
 /*------------------- 4.2. Header  -------------------*/
 @import 'template/headers/header';
@@ -220,7 +215,6 @@ Version: 1.0.0
 /*------------------- 4.28. Popup Side Menu  -------------------*/
 @import 'template/sections/sidemenu-v1';
 /*------------------- 4.28. Popup Side Menu  -------------------*/
-
 
 /*=================================
     05. Spacing
