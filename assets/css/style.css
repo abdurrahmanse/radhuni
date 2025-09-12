@@ -112,7 +112,7 @@ body {
   color: var(--body-color);
   background-color: var(--white-color);
   background-color: var(--white-color);
-  line-height: 28px;
+  line-height: 30px;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
